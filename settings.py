@@ -1,3 +1,5 @@
+# coding=utf-8
+
 #Paweł Gałka 11.08
 import sys
 import pygame as pygame

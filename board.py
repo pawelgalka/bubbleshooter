@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from settings import *
 from bubble import *
 
@@ -176,7 +178,7 @@ def stopBubble(board, ball):
                     deleteFloaters(board)
                     ball = None
     setPosition(board)
-    updateColors(board,COLORS)
+    # updateColors(board,COLORS)
     print(COLORS)
     checkwin = checkWin(board)
     return ball, board, checkwin
@@ -211,12 +213,12 @@ def checkFloaters(board, copyBoard, row, col):
         return
 
     elif copyBoard[row][col]==EMPTY:
-        print(row, col, board[row][col], copyBoard[row][col], end=' ')
+        # print(row, col, board[row][col], copyBoard[row][col], end=' ')
         print(2)
         return
 
     elif board[row][col] == copyBoard[row][col]:
-        print(row, col, board[row][col], copyBoard[row][col], end=' ')
+        # print(row, col, board[row][col], copyBoard[row][col], end=' ')
         print(3)
         return
 

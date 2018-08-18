@@ -1,3 +1,5 @@
+# coding=utf-8
+
 #file for class of bubble and it's events
 #Paweł Gałka 11.08
 

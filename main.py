@@ -1,3 +1,5 @@
+# coding=utf-8
+
 #Paweł Gałka 11.08
 
 from settings import *
