@@ -43,3 +43,8 @@ display = pygame.display.set_mode((WIDTH, HEIGHT))  # tuple width,height
 pygame.display.set_caption("BUBBLE SHOOTER")  # change title of window
 display.convert()
 
+# help functions not related to game
+
+def diff(first, second):
+    second = set(second)
+    return [item for item in first if item not in second]

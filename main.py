@@ -21,19 +21,19 @@ def main():
     arrow = Arrow()
 
     while 1: # main game loop
-
         display.fill(BEIGE)
-
         vector, angle = getVector()
-        #print(ball.angle)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
-                pygame.quit()
-                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+
+
 
             if event.type == MOUSEBUTTONDOWN:
                 if not launchBall:
@@ -51,10 +51,11 @@ def main():
         nextBall.draw()
 
         if ball is not None:
+
             ball.update()
             ball.draw()
             #print(ball.rect.centerx, ball.rect.centery)
-            ball, board = stopBubble(board, ball)
+            ball, board, checkwin = stopBubble(board, ball)
 
 
         else:
@@ -64,10 +65,11 @@ def main():
 
         arrow.draw()
 
-        #deleteBubbles(board)
-        #
-        # if not checkBottom(board):
-        #     return
+
+        if checkwin:
+            return 1
+        elif checkBottom(board)==False:
+            return 2
         pygame.display.update()
         clock.tick(FPS)
 

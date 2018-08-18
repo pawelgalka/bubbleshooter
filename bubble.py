@@ -33,7 +33,7 @@ class Bubble(pygame.sprite.Sprite):
 
     def draw(self):
         pygame.gfxdraw.filled_circle(display, self.rect.centerx, self.rect.centery, self.radius, self.color)
-        pygame.gfxdraw.aacircle(display,self.rect.centerx, self.rect.centery, self.radius, self.color)
+        pygame.gfxdraw.aacircle(display,self.rect.centerx, self.rect.centery, self.radius, BLACK)
 
 
     def shoot(self, angle):
