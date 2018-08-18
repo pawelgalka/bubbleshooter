@@ -65,11 +65,11 @@ def getVector():
     mousePos = pygame.mouse.get_pos()
     vector = pygame.math.Vector2((mousePos[0] - STARTX, STARTY - mousePos[1]))
     if vector.x == 0 :
-        return vector, 0
+        return vector, 90
     if vector.y < 0 and vector.x < 0:
-        return vector, 180
+        return vector, 179
     if vector.y < 0 and vector.x > 0:
-        return vector, 0
+        return vector, 1
     angle = math.degrees(math.atan(vector.y / vector.x))
     if angle < 0:
         angle += 180
@@ -79,7 +79,7 @@ def getVector():
 
 def getBubble(colors):
     random.shuffle(colors)
-    return Bubble(colors[0])
+    return Bubble(colors[0], x=WIDTH-BALLSIZE-10)
 
 
 def stopBubble(board, ball):
@@ -87,14 +87,21 @@ def stopBubble(board, ball):
         for col in range(len(board[row])):
             # print(row,col)
             if (board[row][col] != EMPTY and ball != None):
-                if (pygame.sprite.collide_rect(ball, board[row][col])) or ball.rect.top < 0:
+                # print(ball.rect.top)
+                if (pygame.sprite.collide_rect(ball, board[row][col])) or ball.rect.top <= 0:
                     # print(pygame.sprite.collide_rect(ball, board[row][col]))
-                    if ball.rect.top < 0:
-                        #newRow, newColumn = addBubbleToTop(board, ball)
-                        pass
+
+                    if ball.rect.top <= 0:
+                        newCol, newRow = addToTop(ball, board)
+                        board[newRow][newCol] = copy.copy(ball)
+                        board[newRow][newCol].row = newRow
+                        board[newRow][newCol].col = newCol
+                        print(newRow,newCol)
+                        ball = None
+
 
                     elif ball.rect.centery>=board[row][col].rect.centery: #hitting under ball
-
+                        print('pod',row,col)
                         if ball.rect.centerx<board[row][col].rect.centerx: #LD corner
 
                             if row%2==0: #longer line
@@ -121,8 +128,12 @@ def stopBubble(board, ball):
                         ball = None
 
                     else:  # hitting over ball
+                        print('nad',row,col)
+                        if row == 0:
+                            # pass
+                            newCol, newRow = addToTop(ball, board)
+                        elif ball.rect.centerx < board[row][col].rect.centerx:  # LU corner
 
-                        if ball.rect.centerx < board[row][col].rect.centerx:  # LU corner
 
                             if row % 2 == 0:  # longer line
                                 newRow = row - 1
@@ -143,7 +154,7 @@ def stopBubble(board, ball):
                                 newCol = col
                                 if board[newRow][newCol] is not EMPTY:
                                     newRow += 1
-                                    newCol -= 1
+                                    newCol += 1
 
 
                             else:  # shorter line
@@ -152,7 +163,7 @@ def stopBubble(board, ball):
                                 if board[newRow][newCol] is not EMPTY:
                                     newRow += 1
 
-
+                        print(newRow, newCol)
                         board[newRow][newCol] = copy.copy(ball)
                         board[newRow][newCol].row = newRow
                         board[newRow][newCol].col = newCol
@@ -160,6 +171,21 @@ def stopBubble(board, ball):
 
     setPosition(board)
     return ball, board
+
+
+def addToTop(ball, board):
+    newRow = 0
+    x = ball.rect.left
+    newCol = ((x + 5) * COLS) // WIDTH
+    if (board[newRow][newCol] is not EMPTY):
+        if ball.rect.right <= board[newRow][newCol].rect.left:
+            newCol -= 1
+        else:
+            newCol += 1
+    return newCol, newRow
+
+
+#def deleteBubbles(board):
 
 def checkBottom(board):
     for col in range (len(board[10])):

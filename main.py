@@ -10,16 +10,22 @@ def main():
     pygame.init()
     clock = pygame.time.Clock()
     board = CreateEmptyBoard()
+
     FillBoard(board,COLORS)
     launchBall = False
     ball = getBubble(COLORS)
+    ball.rect.centerx = STARTX
+    nextBall = getBubble(COLORS)
+    # board[0][15] = copy.deepcopy(ball)
+    # setPosition(board)
     arrow = Arrow()
-    while 1:
+
+    while 1: # main game loop
 
         display.fill(BEIGE)
 
         vector, angle = getVector()
-
+        #print(ball.angle)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -40,22 +46,28 @@ def main():
                 arrow.update(angle, vector)
 
 
-        nextBall = getBubble(COLORS)
+
         drawBoard(board)
+        nextBall.draw()
 
         if ball is not None:
             ball.update()
             ball.draw()
+            #print(ball.rect.centerx, ball.rect.centery)
             ball, board = stopBubble(board, ball)
+
 
         else:
             launchBall = False
-            ball = nextBall
+            ball = Bubble(nextBall.color)
+            nextBall = getBubble(COLORS)
 
         arrow.draw()
 
-        if not checkBottom(board):
-            return
+        #deleteBubbles(board)
+        #
+        # if not checkBottom(board):
+        #     return
         pygame.display.update()
         clock.tick(FPS)
 
